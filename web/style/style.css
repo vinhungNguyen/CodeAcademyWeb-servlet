@@ -1,0 +1,35 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Dec 9, 2025, 11:35:45 PM
+    Author     : vinhung
+*/
+/* Tùy chỉnh nhẹ */
+.course-card {
+    transition: transform .12s ease;
+}
+.course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.hero {
+    background: linear-gradient(90deg, #0d6efd22, #6f42c122);
+    padding: 48px 0;
+    border-radius: .75rem;
+}
+.price-badge {
+    font-weight:700;
+    font-size:1.05rem;
+}
+.truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.navbar {
+    background-color: beige;
+}
