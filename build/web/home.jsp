@@ -15,7 +15,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-light border-bottom">
             <div class="container">
-                <a class="navbar-brand fw-bold" href="#">CodeAcademy</a>
+                <a class="navbar-brand fw-bold" href="index.jsp">CodeAcademy</a>
 
                 <form class="d-flex ms-auto me-3" method="get" action="search">
                     <input class="form-control me-2" name="q" type="search" placeholder="Tìm khóa học, ví dụ: Java, React..." aria-label="Search">
@@ -50,19 +50,31 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h6 class="card-title">Lọc theo danh mục</h6>
-                            <form method="get" action="courses">
+
+                            <form method="get" action="course">
                                 <select class="form-select mb-2" name="category">
-                                    <option value="">Tất cả</option>
-                                    <option value="web">Web Development</option>
-                                    <option value="mobile">Mobile</option>
-                                    <option value="data">Data Science</option>
-                                    <option value="devops">DevOps</option>
-                                    <option value="game">Game Dev</option>
+                                    <!-- Option "Tất cả" -->
+                                    <option value="0" ${empty currentCate ? 'selected' : ''}>Tất cả</option>
+
+                                    <!-- List category -->
+                                    <c:forEach var="i" items="${listCategory}">
+                                        <option value="${i.categoryId}"
+                                                ${i.categoryId == currentCate ? 'selected' : ''}>
+                                            ${i.catName}
+                                        </option>
+                                    </c:forEach>
+
+                                    <!--                                    <option value="web">Web Development</option>
+                                                                        <option value="mobile">Mobile</option>
+                                                                        <option value="data">Data Science</option>
+                                                                        <option value="devops">DevOps</option>
+                                                                        <option value="game">Game Dev</option>-->
                                 </select>
                                 <div class="d-grid">
-                                    <button class="btn btn-outline-primary btn-sm" type="submit">Áp dụng</button>
+                                    <button class="btn btn-outline-primary btn-sm" type="submit" >Áp dụng</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
 
@@ -89,14 +101,14 @@
                     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
 
                         <!-- JSTL loop: courses should be set by servlet as request attribute -->
-                        <c:if test="${not empty listCoursePage}">
-                            <c:forEach var="c" items="${listCoursePage}">
+                        <c:if test="${not empty listCourseByCategory}">
+                            <c:forEach var="c" items="${listCourseByCategory}">
                                 <div class="col">
                                     <div class="card h-100 course-card">
                                         <img src="${c.imageUrl}" class="card-img-top" alt="${c.title}" style="height:160px; object-fit:cover;">
                                         <div class="card-body d-flex flex-column">
                                             <h5 class="card-title mb-1">${c.title}</h5>
-                                            
+
                                             <p class="mb-2 text-muted truncate-2">${c.description}</p>
                                             <div class="mt-auto d-flex justify-content-between align-items-center">
                                                 <span class="text-success price-badge">${c.price}₫</span>
@@ -115,23 +127,19 @@
                         </c:if>
 
                         <!-- Fallback sample cards nếu không có courses (cho dev test nhanh) -->
-                        
+
                     </div>
 
                     <!-- Pagination (static example) -->
                     <nav aria-label="Course pagination" class="mt-4">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                            
+                            <li class="page-item ${currentPage == 0 ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage -1}">«</a></li>
+
                             <c:forEach begin="1" end="${endPage}" var="i">
-                                <li class="page-item"><a class="page-link" href="?page=${i}">${i}</a></li>
-                            </c:forEach>
-                            
-                            
-<!--                            <li class="page-item active"><a class="page-link" href="?page=1">1</a></li>
-                            <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
-                            <li class="page-item"><a class="page-link" href="?page=3">3</a></li>-->
-                            <li class="page-item"><a class="page-link" href="?page=2">»</a></li>
+                                <li class="page-item ${currentPage == i ? "active" : "" }"><a class="page-link" href="course?page=${i}&category=${currentCate}">${i}</a></li>
+                                </c:forEach>
+
+                            <li class="page-item ${currentPage == endPage ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage +1}">»</a></li>
                         </ul>
                     </nav>
                 </section>

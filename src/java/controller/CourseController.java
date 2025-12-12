@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CategoryDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,8 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import dal.CourseDao;
+import java.util.ArrayList;
 import java.util.List;
 import model.Courses;
+import model.Categories;
 
 /**
  *
@@ -22,7 +25,7 @@ import model.Courses;
 @WebServlet(name = "CourseController", urlPatterns = {"/course"})
 public class CourseController extends HttpServlet {
 
-    private final int LIMIT_ITEM_PAGINATION = 3;
+    private final int LIMIT_ITEM_PAGINATION = 6;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,24 +46,36 @@ public class CourseController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CourseDao dao = new CourseDao();
-
+        CategoryDao catDao = new CategoryDao();
         List<Courses> coursesList = dao.getAllCourses();
-        
-        String page = request.getParameter("page");
-        if(request.getParameter("page") == null){
-            page = "1";
-        }
-        
-        
-        int numCourse = dao.getNumOfCourse();
+
+        int page = request.getParameter("page") == null
+                ? 0 : Integer.parseInt(request.getParameter("page"));
+
+        int category = request.getParameter("category") == null
+                ? 0 : Integer.parseInt(request.getParameter("category"));
+
+        int numCourse = dao.getNumOfCourse(category);
 
         int endPage = numCourse / LIMIT_ITEM_PAGINATION;
         if (numCourse % LIMIT_ITEM_PAGINATION != 0) {
             endPage++;
         }
 
-        List<Courses> listCoursePage = dao.getListCourseByPage(Integer.parseInt(page), LIMIT_ITEM_PAGINATION);
+        List<Categories> listCategory = catDao.getListCategory();
+   
+        List<Courses> listCoursePage = page == 0
+                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
+                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
 
+        List<Courses> listCourseByCategory = category == 0
+                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
+                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
+
+        request.setAttribute("currentCate", category);
+        request.setAttribute("listCourseByCategory", listCourseByCategory);
+        request.setAttribute("listCategory", listCategory);
+        request.setAttribute("currentPage", page);
         request.setAttribute("listCoursePage", listCoursePage);
         request.setAttribute("coursesList", coursesList);
         request.setAttribute("endPage", endPage);
@@ -73,7 +88,7 @@ public class CourseController extends HttpServlet {
             throws ServletException, IOException {
         CourseDao dao = new CourseDao();
 //        List<Courses> listCoursePage = dao.getListCourseByPage(page, LIMIT_ITEM_PAGINATION);
-        
+
 //        request.setAttribute("listCoursePage", listCoursePage);
 //        response.sendRedirect("home.jsp");
     }
