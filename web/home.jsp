@@ -133,7 +133,7 @@
                     <!-- Pagination (static example) -->
                     <nav aria-label="Course pagination" class="mt-4">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item ${currentPage == 0 ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage -1}">«</a></li>
+                            <li class="page-item ${currentPage == 1 ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage -1}">«</a></li>
 
                             <c:forEach begin="1" end="${endPage}" var="i">
                                 <li class="page-item ${currentPage == i ? "active" : "" }"><a class="page-link" href="course?page=${i}&category=${currentCate}">${i}</a></li>

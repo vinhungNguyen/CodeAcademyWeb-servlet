@@ -50,7 +50,7 @@ public class CourseController extends HttpServlet {
         List<Courses> coursesList = dao.getAllCourses();
 
         int page = request.getParameter("page") == null
-                ? 0 : Integer.parseInt(request.getParameter("page"));
+                ? 1 : Integer.parseInt(request.getParameter("page"));
 
         int category = request.getParameter("category") == null
                 ? 0 : Integer.parseInt(request.getParameter("category"));
@@ -63,15 +63,22 @@ public class CourseController extends HttpServlet {
         }
 
         List<Categories> listCategory = catDao.getListCategory();
-   
-        List<Courses> listCoursePage = page == 0
-                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
-                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
 
+//        if(category == 0 && page == 0){
+//            dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION);
+//        }
+        List<Courses> listCoursePage = dao.getListCourseByPage(page, LIMIT_ITEM_PAGINATION);
+
+//                page == 0
+//                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
+//                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
         List<Courses> listCourseByCategory = category == 0
-                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
-                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
+                ? dao.getListCourseByPage(page, LIMIT_ITEM_PAGINATION)
+                : dao.getListCourseByCatePaging(category, page, LIMIT_ITEM_PAGINATION);
 
+//                category == 0
+//                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
+//                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
         request.setAttribute("currentCate", category);
         request.setAttribute("listCourseByCategory", listCourseByCategory);
         request.setAttribute("listCategory", listCategory);
