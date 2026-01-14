@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.web.shop;
 
 import dal.CategoryDao;
 import java.io.IOException;
@@ -64,21 +64,16 @@ public class CourseController extends HttpServlet {
 
         List<Categories> listCategory = catDao.getListCategory();
 
-//        if(category == 0 && page == 0){
-//            dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION);
-//        }
+
         List<Courses> listCoursePage = dao.getListCourseByPage(page, LIMIT_ITEM_PAGINATION);
 
-//                page == 0
-//                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
-//                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
+        
         List<Courses> listCourseByCategory = category == 0
                 ? dao.getListCourseByPage(page, LIMIT_ITEM_PAGINATION)
                 : dao.getListCourseByCatePaging(category, page, LIMIT_ITEM_PAGINATION);
 
-//                category == 0
-//                ? dao.getListCourseByPage(1, LIMIT_ITEM_PAGINATION)
-//                : dao.getListCourseByCatePaging(category, page == 0 ? 1 : page, LIMIT_ITEM_PAGINATION);
+
+
         request.setAttribute("currentCate", category);
         request.setAttribute("listCourseByCategory", listCourseByCategory);
         request.setAttribute("listCategory", listCategory);

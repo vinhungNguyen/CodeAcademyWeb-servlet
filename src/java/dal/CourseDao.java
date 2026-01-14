@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  */
 public class CourseDao extends DBContext {
 
+    private final String GET_TOTAL_COURSE = "SELECT COUNT(*) from Courses";
     private final String QUERY_GET_COURSES_SQL = "select * from Courses";
     private final String GET_NUM_OF_COURSE_SQL = "SELECT COUNT(*) FROM Courses WHERE (CategoryID = ? OR ? = 0)";
     private final String GET_LIST_COURSE_BY_PAGE = "select * from Courses order by CourseID\n"
@@ -26,6 +27,21 @@ public class CourseDao extends DBContext {
      */
     private final String GET_COURSE_BY_CATEGORY = "select * from Courses where CategoryID = ? order by CourseID \n"
             + "										offset ? row fetch next ? rows only";
+
+    public int getNumAllCourse() {
+        try {
+            PreparedStatement stm = c.prepareStatement(GET_TOTAL_COURSE);
+            ResultSet res = stm.executeQuery();
+
+            while (res.next()) {
+                return res.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
 
     public List<Courses> getCourseByCategory(int categoryId, int index, int numOfCoursePage) {
         List<Courses> res = new ArrayList<>();
@@ -91,12 +107,12 @@ public class CourseDao extends DBContext {
         return 0;
     }
 
-    public List<Courses> getListCourseByCatePaging(int categoryID,int index, int numOfCoursePage) {
+    public List<Courses> getListCourseByCatePaging(int categoryID, int index, int numOfCoursePage) {
         List<Courses> res = new ArrayList<>();
         try {
             PreparedStatement stm = c.prepareStatement("select * from Courses where CategoryID = ? order by CourseID\n"
                     + "		offset ? rows fetch next ? rows only");
-            
+
             stm.setInt(1, categoryID);
             stm.setInt(2, (index - 1) * numOfCoursePage);
             stm.setInt(3, numOfCoursePage);
@@ -143,10 +159,11 @@ public class CourseDao extends DBContext {
     public static void main(String[] args) {
         CourseDao dao = new CourseDao();
         dao.getNumOfCourse(2);
-        
-        for (Courses c : dao.getListCourseByCatePaging(1, 1, 6)) {
-            System.out.println(c);
-        }
+
+        System.out.println(dao.getNumAllCourse());
+//        for (Courses c : dao.getListCourseByCatePaging(1, 1, 6)) {
+//            System.out.println(c);
+//        }
 //        System.out.println(dao.getNumOfCourse());
     }
 }

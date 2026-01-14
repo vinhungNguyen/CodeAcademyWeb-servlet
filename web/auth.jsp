@@ -113,9 +113,9 @@
 
         <input type="text" name="fullname" placeholder="Full name" required>
 
-        <input type="email" name="email" placeholder="Email" required>
+        <input type="email" name="emailRegister" placeholder="Email" required>
 
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="passwordRegister" placeholder="Password" required>
 
         <input type="password" name="confirm" placeholder="Confirm Password" required>
 

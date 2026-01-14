@@ -92,8 +92,9 @@
             </form>
 
 
-            <button><a href="auth.jsp">Login</a></button>
-
+            <form method="get" action="${pageContext.request.contextPath}/login" >
+                    <button type="submit">Login</button>
+                </form>
 
         </div>
     </body>

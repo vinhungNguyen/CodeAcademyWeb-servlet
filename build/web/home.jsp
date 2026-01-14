@@ -26,7 +26,16 @@
                     Cart <span class="badge bg-danger" id="cartCount">0</span>
                 </button>
 
-                <a class="btn btn-primary" href="login.jsp">Login</a>
+
+                <c:if test="${currentUser == null}">
+                    <a class="btn btn-primary" href="auth.jsp">Login</a>
+                </c:if>
+
+                <c:if test="${currentUser != null}">
+                    <p>${currentUser.fullName}</p>
+                </c:if>
+
+
             </div>
         </nav>
 
@@ -133,13 +142,13 @@
                     <!-- Pagination (static example) -->
                     <nav aria-label="Course pagination" class="mt-4">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item ${currentPage == 1 ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage -1}">«</a></li>
+                            <li class="page-item ${currentPage == 1 ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage -1}&category=${currentCate}">«</a></li>
 
                             <c:forEach begin="1" end="${endPage}" var="i">
                                 <li class="page-item ${currentPage == i ? "active" : "" }"><a class="page-link" href="course?page=${i}&category=${currentCate}">${i}</a></li>
                                 </c:forEach>
 
-                            <li class="page-item ${currentPage == endPage ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage +1}">»</a></li>
+                            <li class="page-item ${currentPage == endPage ? "disabled" : ""}"><a class="page-link" href="?page=${currentPage +1}&category=${currentCate}">»</a></li>
                         </ul>
                     </nav>
                 </section>
